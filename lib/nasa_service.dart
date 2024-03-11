@@ -11,8 +11,8 @@ import 'error_message.dart';
 class NasaService {
   static const String _nasaBaseUrl = AppConfig.nasaPlanetaryBaseUrl;
 
-  Future<HttpResponse<List<NasaPlanetaryPhoto>>> fetchPhotos(String startDate,
-      String endDate) async {
+  Future<HttpResponse<List<NasaPlanetaryPhoto>>> fetchPhotos(
+      String startDate, String endDate) async {
     try {
       final response = await http.get(
           Uri.parse("$_nasaBaseUrl&start_date=$startDate&end_date=$endDate"));
@@ -24,13 +24,18 @@ class NasaService {
     }
   }
 
+  Future<List<NasaPlanetaryEntity>> fetchPhotosFromDatabase() async {
+    return DatabaseHelper().getNasaPlanetaryEntities();
+  }
+
   HttpResponse<List<NasaPlanetaryPhoto>> _handleResponse(
       http.Response response) {
     try {
       if (response.statusCode == 200) {
+        DatabaseHelper().clearTable();
         List<dynamic> jsonList = json.decode(response.body);
         List<NasaPlanetaryPhoto> list =
-        jsonList.map((json) => NasaPlanetaryPhoto.fromJson(json)).toList();
+            jsonList.map((json) => NasaPlanetaryPhoto.fromJson(json)).toList();
         for (var element in list) {
           DatabaseHelper().insertData(
               NasaPlanetaryEntity.fromNasaPlanetaryPhoto(element).toMap());

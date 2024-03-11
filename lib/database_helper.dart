@@ -2,6 +2,8 @@ import 'package:nasa_satellite/app_config.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import 'nasa_planetary_entity.dart';
+
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
 
@@ -25,7 +27,7 @@ class DatabaseHelper {
 
   void _createDb(Database db, int newVersion) async {
     await db.execute(
-        'CREATE TABLE ${AppConfig.nasaDatabaseName} (id INTEGER PRIMARY KEY, title TEXT, url TEXT, explanation TEXT)');
+        'CREATE TABLE ${AppConfig.nasaDatabaseName} (id INTEGER PRIMARY KEY, title TEXT, url TEXT, explanation TEXT, date TEXT)');
   }
 
   Future insertData(Map<String, dynamic> data,
@@ -35,9 +37,29 @@ class DatabaseHelper {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  Future<List<NasaPlanetaryEntity>> getNasaPlanetaryEntities() async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> data = await getData();
+
+    return List.generate(data.length, (i) {
+      return NasaPlanetaryEntity(
+        explanation: data[i]['explanation'],
+        title: data[i]['title'],
+        url: data[i]['url'],
+        date: data[i]['date'],
+      );
+    });
+  }
+
   Future<List<Map<String, dynamic>>> getData(
       {String tableName = AppConfig.nasaDatabaseName}) async {
     Database db = await database;
     return await db.query(tableName);
+  }
+
+  Future clearTable(
+      {String tableName = AppConfig.nasaDatabaseName}) async {
+    final Database db = await database;
+    await db.delete(tableName);
   }
 }

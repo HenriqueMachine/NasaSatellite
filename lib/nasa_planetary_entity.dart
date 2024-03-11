@@ -4,11 +4,13 @@ class NasaPlanetaryEntity {
   final String? explanation;
   final String? title;
   final String? url;
+  final String? date;
 
   NasaPlanetaryEntity({
     this.explanation,
     this.title,
     this.url,
+    this.date,
   });
 
   Map<String, dynamic> toMap() {
@@ -24,6 +26,7 @@ class NasaPlanetaryEntity {
     return NasaPlanetaryEntity(
         explanation: planetaryPhoto.explanation,
         title: planetaryPhoto.title,
-        url: planetaryPhoto.url);
+        url: planetaryPhoto.url,
+        date: planetaryPhoto.date);
   }
 }

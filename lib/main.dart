@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nasa_satellite/nasa_planetary_photo_cubit.dart';
+import 'package:nasa_satellite/nasa_planetary_view_object.dart';
 import 'package:nasa_satellite/stateview.dart';
-
-import 'nasa_planetary_photo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: BlocBuilder<NasaPlanetaryPhotoCubit,
-          StateView<List<NasaPlanetaryPhoto>>>(
+          StateView<List<NasaPlanetaryViewObject>>>(
         builder: (context, state) {
           switch (state.status) {
             case StateViewStatus.loading:
@@ -53,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: CircularProgressIndicator(),
               );
             case StateViewStatus.success:
-              final List<NasaPlanetaryPhoto> photos = state.data!;
+              final List<NasaPlanetaryViewObject> photos = state.data!;
               return ListView.builder(
                 itemCount: photos.length,
                 itemBuilder: (context, index) {
