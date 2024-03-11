@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/dimens.dart';
+
 class CardTileItem extends StatelessWidget {
   final String imageUrl;
   final String title;
@@ -19,8 +21,8 @@ class CardTileItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        elevation: 8,
-        margin: const EdgeInsets.all(8),
+        elevation: Dimensions.DimenDouble8,
+        margin: const EdgeInsets.all(Dimensions.DimenDouble8),
         child: Stack(
           children: [
             Image.network(
@@ -30,9 +32,9 @@ class CardTileItem extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             Positioned(
-              top: 16,
-              left: 16,
-              right: 16,
+              top: Dimensions.DimenDouble16,
+              left: Dimensions.DimenDouble16,
+              right: Dimensions.DimenDouble16,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -41,10 +43,10 @@ class CardTileItem extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      fontSize: Dimensions.DimenDouble16,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: Dimensions.DimenDouble8),
                   Text(
                     date,
                     style: const TextStyle(
