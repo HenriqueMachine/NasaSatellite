@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nasa_satellite/core/dimens.dart';
 import 'package:nasa_satellite/core/error_message.dart';
+import 'package:nasa_satellite/core/hint_message.dart';
 import 'package:nasa_satellite/presentation/widgets/card_tile_item.dart';
 
 import '../../core/state_view.dart';
@@ -75,14 +76,14 @@ class _PhotoListPageState extends State<PhotoListPage> {
       StateView<List<NasaPlanetaryViewObject>> state, BuildContext context) {
     _photos = state.data!;
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(Dimensions.DimenDouble16),
       child: Column(
         children: [
           TextField(
             controller: _searchController,
             onChanged: _filterList,
             decoration: InputDecoration(
-              hintText: 'Search photo...',
+              hintText: HintMessage.searchPhoto,
               border: InputBorder.none,
               suffixIcon: IconButton(
                 icon: const Icon(Icons.clear),
