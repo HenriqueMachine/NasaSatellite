@@ -15,32 +15,32 @@ class PhotoDetailPage extends StatelessWidget {
         title: Text(photo.title ?? ErrorMessage.failToRecoverTitle),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(Dimensions.DimenDouble16),
+        padding: const EdgeInsets.all(Dimensions.dimenDouble16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.network(photo.url ?? ErrorMessage.failToRecoverURL),
-            const SizedBox(height: Dimensions.DimenDouble16),
+            const SizedBox(height: Dimensions.dimenDouble16),
             Text(
               photo.title ?? ErrorMessage.failToRecoverTitle,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: Dimensions.DimenDouble24,
+                fontSize: Dimensions.dimenDouble24,
               ),
             ),
-            const SizedBox(height: Dimensions.DimenDouble8),
+            const SizedBox(height: Dimensions.dimenDouble8),
             Text(
               "Date: ${photo.date ?? ErrorMessage.failToRecoverDate}",
               style: const TextStyle(
-                fontSize: Dimensions.DimenDouble16,
+                fontSize: Dimensions.dimenDouble16,
                 color: Colors.grey,
               ),
             ),
-            const SizedBox(height: Dimensions.DimenDouble16),
+            const SizedBox(height: Dimensions.dimenDouble16),
             Text(
               photo.explanation ?? ErrorMessage.failToRecoverExplanation,
               style: const TextStyle(
-                fontSize: Dimensions.DimenDouble16,
+                fontSize: Dimensions.dimenDouble16,
               ),
             ),
           ],

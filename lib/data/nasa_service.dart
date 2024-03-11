@@ -19,7 +19,7 @@ class NasaService {
       return _handleResponse(response);
     } catch (e) {
       return HttpResponse<List<NasaPlanetaryPhoto>>(
-        errorMessage: 'Error: $e',
+        errorMessage: "Error: $e",
       );
     }
   }
@@ -52,7 +52,7 @@ class NasaService {
       }
     } catch (e) {
       return HttpResponse<List<NasaPlanetaryPhoto>>(
-        errorMessage: 'Error: $e',
+        errorMessage: "Error: $e",
       );
     }
   }

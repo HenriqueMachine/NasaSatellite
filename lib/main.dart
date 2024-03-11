@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nasa_satellite/core/app_config.dart';
 import 'package:nasa_satellite/presentation/routes.dart';
 
 void main() {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Nasa Satellite",
+      title: AppConfig.appName,
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),

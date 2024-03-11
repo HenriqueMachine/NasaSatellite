@@ -21,8 +21,8 @@ class CardTileItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        elevation: Dimensions.DimenDouble8,
-        margin: const EdgeInsets.all(Dimensions.DimenDouble8),
+        elevation: Dimensions.dimenDouble8,
+        margin: const EdgeInsets.all(Dimensions.dimenDouble8),
         child: Stack(
           children: [
             Image.network(
@@ -32,9 +32,9 @@ class CardTileItem extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             Positioned(
-              top: Dimensions.DimenDouble16,
-              left: Dimensions.DimenDouble16,
-              right: Dimensions.DimenDouble16,
+              top: Dimensions.dimenDouble16,
+              left: Dimensions.dimenDouble16,
+              right: Dimensions.dimenDouble16,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -43,10 +43,10 @@ class CardTileItem extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: Dimensions.DimenDouble16,
+                      fontSize: Dimensions.dimenDouble16,
                     ),
                   ),
-                  const SizedBox(height: Dimensions.DimenDouble8),
+                  const SizedBox(height: Dimensions.dimenDouble8),
                   Text(
                     date,
                     style: const TextStyle(

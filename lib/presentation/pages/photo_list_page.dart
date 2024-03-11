@@ -76,7 +76,7 @@ class _PhotoListPageState extends State<PhotoListPage> {
       StateView<List<NasaPlanetaryViewObject>> state, BuildContext context) {
     _photos = state.data!;
     return Padding(
-      padding: const EdgeInsets.all(Dimensions.DimenDouble16),
+      padding: const EdgeInsets.all(Dimensions.dimenDouble16),
       child: Column(
         children: [
           TextField(
@@ -100,9 +100,9 @@ class _PhotoListPageState extends State<PhotoListPage> {
                   context.read<NasaPlanetaryPhotoCubit>().getPlanetaryList(),
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: Dimensions.DimenInt2,
-                  crossAxisSpacing: Dimensions.DimenDouble8,
-                  mainAxisSpacing: Dimensions.DimenDouble8,
+                  crossAxisCount: Dimensions.dimenInt2,
+                  crossAxisSpacing: Dimensions.dimenDouble8,
+                  mainAxisSpacing: Dimensions.dimenDouble8,
                 ),
                 controller: _scrollController,
                 itemCount: _photos.length,
