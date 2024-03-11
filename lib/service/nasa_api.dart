@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:nasa_satellite/httpi_response.dart';
 import 'package:nasa_satellite/nasa_planetary_photo.dart';
 import 'package:http/http.dart' as http;
-
 import '../app_config.dart';
+import '../error_message.dart';
 
 class NasaApi {
-  static const String _nasaBaseUrl = "AppConfig.nasaPlanetaryBaseUrl";
+  static const String _nasaBaseUrl = AppConfig.nasaPlanetaryBaseUrl;
 
   Future<HttpResponse<List<NasaPlanetaryPhoto>>> fetchPhotos(
       DateTime startDate, DateTime endDate) async {
@@ -38,7 +38,7 @@ class NasaApi {
       } else {
         return HttpResponse<List<NasaPlanetaryPhoto>>(
           success: false,
-          errorMessage: 'Failed to load APOD list',
+          errorMessage: ErrorMessage.messageErrorLoadListPhoto,
           statusCode: response.statusCode,
         );
       }
