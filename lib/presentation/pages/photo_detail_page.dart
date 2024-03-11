@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nasa_satellite/core/dimens.dart';
+import 'package:nasa_satellite/core/error_message.dart';
 import 'package:nasa_satellite/domain/nasa_planetary_view_object.dart';
 
 class PhotoDetailPage extends StatelessWidget {
@@ -10,35 +12,35 @@ class PhotoDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(photo.title ?? ""),
+        title: Text(photo.title ?? ErrorMessage.failToRecoverTitle),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(Dimensions.DimenDouble16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(photo.url ?? ""),
-            const SizedBox(height: 16.0),
+            Image.network(photo.url ?? ErrorMessage.failToRecoverURL),
+            const SizedBox(height: Dimensions.DimenDouble16),
             Text(
-              photo.title ?? "",
+              photo.title ?? ErrorMessage.failToRecoverTitle,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 20.0,
+                fontSize: Dimensions.DimenDouble24,
               ),
             ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: Dimensions.DimenDouble8),
             Text(
-              "Date: ${photo.date ?? ""}",
+              "Date: ${photo.date ?? ErrorMessage.failToRecoverDate}",
               style: const TextStyle(
-                fontSize: 16.0,
+                fontSize: Dimensions.DimenDouble16,
                 color: Colors.grey,
               ),
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: Dimensions.DimenDouble16),
             Text(
-              photo.explanation ?? "",
+              photo.explanation ?? ErrorMessage.failToRecoverExplanation,
               style: const TextStyle(
-                fontSize: 16.0,
+                fontSize: Dimensions.DimenDouble16,
               ),
             ),
           ],
