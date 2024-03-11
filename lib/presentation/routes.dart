@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nasa_satellite/presentation/nasa_planetary_photo_cubit.dart';
-import 'package:nasa_satellite/presentation/photo_detail_page.dart';
-import 'package:nasa_satellite/presentation/photo_list_page.dart';
+import 'package:nasa_satellite/presentation/cubits/nasa_planetary_photo_cubit.dart';
+import 'package:nasa_satellite/presentation/pages/photo_detail_page.dart';
+import 'package:nasa_satellite/presentation/pages/photo_list_page.dart';
 
 class Routes {
   static const String photosList = '/photosList';
