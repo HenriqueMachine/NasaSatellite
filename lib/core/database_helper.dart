@@ -1,8 +1,8 @@
-import 'package:nasa_satellite/app_config.dart';
+import 'package:nasa_satellite/core/app_config.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-import 'nasa_planetary_entity.dart';
+import '../domain/nasa_planetary_entity.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -38,7 +38,6 @@ class DatabaseHelper {
   }
 
   Future<List<NasaPlanetaryEntity>> getNasaPlanetaryEntities() async {
-    final Database db = await database;
     final List<Map<String, dynamic>> data = await getData();
 
     return List.generate(data.length, (i) {

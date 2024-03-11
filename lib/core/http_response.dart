@@ -1,4 +1,4 @@
-import 'package:nasa_satellite/error_message.dart';
+import 'package:nasa_satellite/core/error_message.dart';
 
 class HttpResponse<T> {
   final T? data;

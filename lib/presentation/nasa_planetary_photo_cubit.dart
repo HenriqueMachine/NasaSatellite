@@ -1,13 +1,13 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nasa_satellite/http_response.dart';
-import 'package:nasa_satellite/nasa_planetary_photo.dart';
-import 'package:nasa_satellite/nasa_planetary_view_object.dart';
-import 'package:nasa_satellite/network_extensions.dart';
-import 'package:nasa_satellite/stateview.dart';
+import 'package:nasa_satellite/core/http_response.dart';
+import 'package:nasa_satellite/domain/nasa_planetary_view_object.dart';
+import 'package:nasa_satellite/core/network_extensions.dart';
+import 'package:nasa_satellite/core/stateview.dart';
 
-import 'nasa_planetary_entity.dart';
-import 'nasa_service.dart';
+import '../domain/nasa_planetary_entity.dart';
+import '../data/nasa_service.dart';
+import '../domain/nasa_planetary_photo.dart';
 
 class NasaPlanetaryPhotoCubit
     extends Cubit<StateView<List<NasaPlanetaryViewObject>>> {

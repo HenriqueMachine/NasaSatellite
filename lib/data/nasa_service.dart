@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:nasa_satellite/database_helper.dart';
-import 'package:nasa_satellite/http_response.dart';
-import 'package:nasa_satellite/nasa_planetary_entity.dart';
-import 'package:nasa_satellite/nasa_planetary_photo.dart';
+import 'package:nasa_satellite/core/database_helper.dart';
+import 'package:nasa_satellite/core/http_response.dart';
+import 'package:nasa_satellite/domain/nasa_planetary_entity.dart';
 import 'package:http/http.dart' as http;
-import 'app_config.dart';
-import 'error_message.dart';
+import '../core/app_config.dart';
+import '../domain/nasa_planetary_photo.dart';
+import '../core/error_message.dart';
 
 class NasaService {
   static const String _nasaBaseUrl = AppConfig.nasaPlanetaryBaseUrl;

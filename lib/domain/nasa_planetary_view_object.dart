@@ -1,5 +1,6 @@
-import 'package:nasa_satellite/nasa_planetary_entity.dart';
-import 'package:nasa_satellite/nasa_planetary_photo.dart';
+import 'package:nasa_satellite/domain/nasa_planetary_entity.dart';
+
+import 'nasa_planetary_photo.dart';
 
 class NasaPlanetaryViewObject {
   final String? explanation;

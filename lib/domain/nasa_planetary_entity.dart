@@ -1,4 +1,4 @@
-import 'package:nasa_satellite/nasa_planetary_photo.dart';
+import 'nasa_planetary_photo.dart';
 
 class NasaPlanetaryEntity {
   final String? explanation;

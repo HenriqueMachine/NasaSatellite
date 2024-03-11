@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nasa_satellite/nasa_planetary_photo_cubit.dart';
-import 'package:nasa_satellite/nasa_planetary_view_object.dart';
-import 'package:nasa_satellite/stateview.dart';
+import 'package:nasa_satellite/presentation/nasa_planetary_photo_cubit.dart';
+import 'package:nasa_satellite/domain/nasa_planetary_view_object.dart';
+import 'package:nasa_satellite/core/stateview.dart';
 
 void main() {
   runApp(const MyApp());
