@@ -88,7 +88,7 @@ class NasaPlanetaryPhotoCubit
     if (queryFilter.isNotEmpty) {
       final String normalizeQuery = queryFilter.toLowerCase();
       final List<NasaPlanetaryViewObject> filteredList = _viewObjectList
-          .where((photo) => photo.title!.toLowerCase().contains(normalizeQuery))
+          .where((photo) => photo.title!.toLowerCase().contains(normalizeQuery) || photo.date!.toLowerCase().contains(normalizeQuery))
           .toList();
       emit(StateView.success(filteredList));
     } else {

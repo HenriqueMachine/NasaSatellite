@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:nasa_satellite/core/dimens.dart';
 import 'package:nasa_satellite/core/error_message.dart';
 import 'package:nasa_satellite/domain/nasa_planetary_view_object.dart';
@@ -19,7 +20,11 @@ class PhotoDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(photo.url ?? ErrorMessage.failToRecoverURL),
+            CachedNetworkImage(
+              imageUrl: photo.url ?? ErrorMessage.failToRecoverURL,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
             const SizedBox(height: Dimensions.dimenDouble16),
             Text(
               photo.title ?? ErrorMessage.failToRecoverTitle,

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/dimens.dart';
@@ -25,11 +26,13 @@ class CardTileItem extends StatelessWidget {
         margin: const EdgeInsets.all(Dimensions.dimenDouble8),
         child: Stack(
           children: [
-            Image.network(
-              imageUrl,
+            CachedNetworkImage(
+              imageUrl: imageUrl,
               height: double.infinity,
               width: double.infinity,
               fit: BoxFit.cover,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             Positioned(
               top: Dimensions.dimenDouble16,

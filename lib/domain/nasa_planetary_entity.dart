@@ -15,9 +15,10 @@ class NasaPlanetaryEntity {
 
   Map<String, dynamic> toMap() {
     return {
-      'explanation': explanation,
-      'title': title,
-      'url': url,
+      "explanation": explanation,
+      "title": title,
+      "url": url,
+      "date": date,
     };
   }
 

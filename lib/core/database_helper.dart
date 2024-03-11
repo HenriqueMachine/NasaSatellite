@@ -42,10 +42,10 @@ class DatabaseHelper {
 
     return List.generate(data.length, (i) {
       return NasaPlanetaryEntity(
-        explanation: data[i]['explanation'],
-        title: data[i]['title'],
-        url: data[i]['url'],
-        date: data[i]['date'],
+        title: data[i]["title"],
+        url: data[i]["url"],
+        explanation: data[i]["explanation"],
+        date: data[i]["date"],
       );
     });
   }
