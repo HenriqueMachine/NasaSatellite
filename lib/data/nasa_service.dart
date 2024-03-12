@@ -9,6 +9,7 @@ import 'package:nasa_satellite/domain/nasa_planetary_photo.dart';
 import '../core/app_config.dart';
 import '../core/error_message.dart';
 
+/// A class responsible for interacting with the NASA API to fetch photos.
 class NasaService {
   static const String _nasaBaseUrl = AppConfig.nasaPlanetaryBaseUrl;
 
@@ -17,6 +18,7 @@ class NasaService {
 
   NasaService(this.databaseHelper, {required this.client});
 
+  /// Fetches photos from the NASA API based on the provided start and end dates.
   Future<HttpResponse<List<NasaPlanetaryPhoto>>> fetchPhotos(
       String startDate, String endDate) async {
     try {
@@ -29,12 +31,14 @@ class NasaService {
     }
   }
 
+  /// Internal method to perform the HTTP GET request to the NASA API.
   Future<http.Response> _fetchPhotosFromApi(
       String startDate, String endDate) async {
     return await client.get(
         Uri.parse("$_nasaBaseUrl&start_date=$startDate&end_date=$endDate"));
   }
 
+  /// Handles the HTTP response from the NASA API and processes the data.
   HttpResponse<List<NasaPlanetaryPhoto>> _handleResponse(
       http.Response response) {
     try {
@@ -53,6 +57,7 @@ class NasaService {
     }
   }
 
+  /// Parses the successful HTTP response from the NASA API.
   HttpResponse<List<NasaPlanetaryPhoto>> _handleSuccess(
       http.Response response) {
     databaseHelper.clearTable();
@@ -69,6 +74,7 @@ class NasaService {
     );
   }
 
+  /// Fetches photos from the local database.
   Future<List<NasaPlanetaryEntity>> fetchPhotosFromDatabase() async {
     return databaseHelper.getNasaPlanetaryEntities();
   }

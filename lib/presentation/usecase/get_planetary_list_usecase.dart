@@ -6,12 +6,17 @@ import 'package:nasa_satellite/data/nasa_service.dart';
 import 'package:nasa_satellite/domain/nasa_planetary_entity.dart';
 import 'package:nasa_satellite/domain/nasa_planetary_photo.dart';
 
+/// Use case responsible for fetching a list of planetary photos.
 class GetPlanetaryListUseCase {
   final NasaService service;
   final DatabaseHelper databaseHelper;
 
+  /// Constructs a [GetPlanetaryListUseCase] with the provided [service] and [databaseHelper].
   GetPlanetaryListUseCase(this.service, this.databaseHelper);
 
+  /// Fetches photos based on the provided batch year and month range.
+  ///
+  /// Returns a [HttpResponse] containing a list of [NasaPlanetaryPhoto].
   Future<HttpResponse<List<NasaPlanetaryPhoto>>> fetchPhotos(int batchYearStart,
       int batchYearEnd, int batchMonthStart, int batchMonthEnd) async {
     final ConnectivityResult network = await Connectivity().checkConnectivity();
