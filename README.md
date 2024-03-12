@@ -5,7 +5,7 @@ A Flutter project for viewing satellite photos provided by NASA.
 ## Contents
 - [Installation](#installation)
 - [Screens](#screens)
-- [Getting Started](#gettingstarted)
+- [Getting Started](#getting-started)
 
 
 ## Installation
