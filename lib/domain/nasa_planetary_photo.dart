@@ -1,3 +1,5 @@
+import 'package:nasa_satellite/domain/nasa_planetary_entity.dart';
+
 class NasaPlanetaryPhoto {
   final String? date;
   final String? explanation;
@@ -31,4 +33,14 @@ class NasaPlanetaryPhoto {
       copyright: json['copyright'],
     );
   }
+
+  factory NasaPlanetaryPhoto.fromEntity(
+      NasaPlanetaryEntity planetaryPhoto) {
+    return NasaPlanetaryPhoto(
+        explanation: planetaryPhoto.explanation,
+        title: planetaryPhoto.title,
+        url: planetaryPhoto.url,
+        date: planetaryPhoto.date);
+  }
+
 }

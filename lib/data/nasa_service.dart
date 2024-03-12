@@ -20,8 +20,7 @@ class NasaService {
   Future<HttpResponse<List<NasaPlanetaryPhoto>>> fetchPhotos(
       String startDate, String endDate) async {
     try {
-      final response = await client.get(
-          Uri.parse("$_nasaBaseUrl&start_date=$startDate&end_date=$endDate"));
+      final response = await _fetchPhotosFromApi(startDate, endDate);
       return _handleResponse(response);
     } catch (e) {
       return HttpResponse<List<NasaPlanetaryPhoto>>(
@@ -30,26 +29,17 @@ class NasaService {
     }
   }
 
-  Future<List<NasaPlanetaryEntity>> fetchPhotosFromDatabase() async {
-    return databaseHelper.getNasaPlanetaryEntities();
+  Future<http.Response> _fetchPhotosFromApi(
+      String startDate, String endDate) async {
+    return await client.get(
+        Uri.parse("$_nasaBaseUrl&start_date=$startDate&end_date=$endDate"));
   }
 
   HttpResponse<List<NasaPlanetaryPhoto>> _handleResponse(
       http.Response response) {
     try {
       if (response.statusCode == 200) {
-        databaseHelper.clearTable();
-        List<dynamic> jsonList = json.decode(response.body);
-        List<NasaPlanetaryPhoto> list =
-            jsonList.map((json) => NasaPlanetaryPhoto.fromJson(json)).toList();
-        for (var element in list) {
-          databaseHelper.insertData(
-              NasaPlanetaryEntity.fromNasaPlanetaryPhoto(element).toMap());
-        }
-        return HttpResponse<List<NasaPlanetaryPhoto>>(
-          data: list,
-          statusCode: response.statusCode,
-        );
+        return _handleSuccess(response);
       } else {
         return HttpResponse<List<NasaPlanetaryPhoto>>(
           errorMessage: ErrorMessage.messageErrorLoadListPhoto,
@@ -61,5 +51,25 @@ class NasaService {
         errorMessage: "Error: $e",
       );
     }
+  }
+
+  HttpResponse<List<NasaPlanetaryPhoto>> _handleSuccess(
+      http.Response response) {
+    databaseHelper.clearTable();
+    List<dynamic> jsonList = json.decode(response.body);
+    List<NasaPlanetaryPhoto> list =
+        jsonList.map((json) => NasaPlanetaryPhoto.fromJson(json)).toList();
+    for (var element in list) {
+      databaseHelper.insertData(
+          NasaPlanetaryEntity.fromNasaPlanetaryPhoto(element).toMap());
+    }
+    return HttpResponse<List<NasaPlanetaryPhoto>>(
+      data: list,
+      statusCode: response.statusCode,
+    );
+  }
+
+  Future<List<NasaPlanetaryEntity>> fetchPhotosFromDatabase() async {
+    return databaseHelper.getNasaPlanetaryEntities();
   }
 }

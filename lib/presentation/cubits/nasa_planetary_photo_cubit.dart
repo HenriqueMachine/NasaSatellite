@@ -1,48 +1,54 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
-import 'package:nasa_satellite/core/http_response.dart';
-import 'package:nasa_satellite/domain/nasa_planetary_view_object.dart';
-import 'package:nasa_satellite/core/network_extensions.dart';
+import 'package:nasa_satellite/core/database_helper.dart';
 import 'package:nasa_satellite/core/state_view.dart';
-
-import '../../core/database_helper.dart';
-import '../../domain/nasa_planetary_entity.dart';
-import '../../data/nasa_service.dart';
-import '../../domain/nasa_planetary_photo.dart';
+import 'package:nasa_satellite/data/nasa_service.dart';
+import 'package:nasa_satellite/domain/nasa_planetary_view_object.dart';
+import 'package:http/http.dart' as http;
+import 'package:nasa_satellite/domain/nasa_planetary_photo.dart';
+import 'package:nasa_satellite/presentation/usecase/filter_photo_usecase.dart';
+import 'package:nasa_satellite/presentation/usecase/get_planetary_list_usecase.dart';
+import 'package:nasa_satellite/presentation/usecase/increment_month_usecase.dart';
 
 class NasaPlanetaryPhotoCubit
     extends Cubit<StateView<List<NasaPlanetaryViewObject>>> {
+  final GetPlanetaryListUseCase _getPlanetaryListUseCase;
+  final FilterPhotosUseCase _filterPhotosUseCase;
+  final IncrementMonthUseCase _incrementMonthUseCase;
+
+  List<NasaPlanetaryViewObject> _viewObjectList = [];
   int _batchYearStart = 1999;
   int _batchYearEnd = 1999;
   int _batchMonthStart = 1;
   int _batchMonthEnd = 2;
 
-  final List<NasaPlanetaryViewObject> _viewObjectList = [];
-  final NasaService service;
-
-  NasaPlanetaryPhotoCubit(this.service) : super(StateView.loading());
+  NasaPlanetaryPhotoCubit(
+    this._getPlanetaryListUseCase,
+    this._filterPhotosUseCase,
+    this._incrementMonthUseCase,
+  ) : super(StateView.loading());
 
   static NasaPlanetaryPhotoCubit create(http.Client httpClient) {
-    DatabaseHelper databaseHelper = DatabaseHelper();
-    final NasaService nasaService = NasaService(databaseHelper, client: httpClient);
-    return NasaPlanetaryPhotoCubit(nasaService);
+    final DatabaseHelper databaseHelper = DatabaseHelper();
+    final NasaService nasaService =
+        NasaService(databaseHelper, client: httpClient);
+    final GetPlanetaryListUseCase getPlanetaryListUseCase =
+        GetPlanetaryListUseCase(nasaService, databaseHelper);
+    final FilterPhotosUseCase filterPhotosUseCase = FilterPhotosUseCase();
+    final IncrementMonthUseCase incrementMonthUseCase = IncrementMonthUseCase();
+
+    return NasaPlanetaryPhotoCubit(
+      getPlanetaryListUseCase,
+      filterPhotosUseCase,
+      incrementMonthUseCase,
+    );
   }
 
   Future<void> getPlanetaryList() async {
-    final ConnectivityResult network = await Connectivity().checkConnectivity();
-    if (network.isConnected) {
-      await _fetchPhotosFromService();
-    } else {
-      await _fetchPhotosFromDatabase();
-    }
-  }
-
-  Future<void> _fetchPhotosFromService() async {
-    final HttpResponse<List<NasaPlanetaryPhoto>> response =
-        await service.fetchPhotos(
-      "$_batchYearStart-$_batchMonthStart-01",
-      "$_batchYearEnd-$_batchMonthEnd-01",
+    final response = await _getPlanetaryListUseCase.fetchPhotos(
+      _batchYearStart,
+      _batchYearEnd,
+      _batchMonthStart,
+      _batchMonthEnd,
     );
     response.handleStatusCode(
       on200: _handleSuccess,
@@ -51,22 +57,11 @@ class NasaPlanetaryPhotoCubit
     );
   }
 
-  Future<void> _fetchPhotosFromDatabase() async {
-    final List<NasaPlanetaryEntity> response =
-        await service.fetchPhotosFromDatabase();
-    final List<NasaPlanetaryViewObject> viewObjectList = response.map((entity) {
-      return NasaPlanetaryViewObject.fromEntity(entity);
-    }).toList();
-    _viewObjectList.addAll(viewObjectList);
-    emitSuccess();
-  }
-
   void _handleSuccess(List<NasaPlanetaryPhoto> data) {
     data.removeLast();
-    final List<NasaPlanetaryViewObject> viewObjectList = data.map((photo) {
-      return NasaPlanetaryViewObject.fromHttpResponse(photo);
-    }).toList();
-    _viewObjectList.addAll(viewObjectList);
+    _viewObjectList = data
+        .map((photo) => NasaPlanetaryViewObject.fromHttpResponse(photo))
+        .toList();
     emitSuccess();
   }
 
@@ -79,27 +74,22 @@ class NasaPlanetaryPhotoCubit
   }
 
   void incrementMonth() {
-    _batchMonthStart++;
-    _batchMonthEnd++;
-    if (_batchMonthEnd > 12) {
-      _batchYearEnd++;
-      _batchMonthEnd = 1;
-      _batchYearStart = _batchYearEnd - 1;
-    }
+    final updatedDates = _incrementMonthUseCase.incrementMonth(
+      _batchYearStart,
+      _batchYearEnd,
+      _batchMonthStart,
+      _batchMonthEnd,
+    );
+    _batchYearStart = updatedDates[0];
+    _batchYearEnd = updatedDates[1];
+    _batchMonthStart = updatedDates[2];
+    _batchMonthEnd = updatedDates[3];
     getPlanetaryList();
   }
 
   void filterList(String queryFilter) {
-    if (queryFilter.isNotEmpty) {
-      final String normalizeQuery = queryFilter.toLowerCase();
-      final List<NasaPlanetaryViewObject> filteredList = _viewObjectList
-          .where((photo) =>
-              photo.title!.toLowerCase().contains(normalizeQuery) ||
-              photo.date!.toLowerCase().contains(normalizeQuery))
-          .toList();
-      emit(StateView.success(filteredList));
-    } else {
-      emit(StateView.success(_viewObjectList));
-    }
+    final filteredList =
+        _filterPhotosUseCase.filterList(_viewObjectList, queryFilter);
+    emit(StateView.success(filteredList));
   }
 }
