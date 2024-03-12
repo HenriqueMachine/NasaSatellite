@@ -1,10 +1,12 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
 import 'package:nasa_satellite/core/http_response.dart';
 import 'package:nasa_satellite/domain/nasa_planetary_view_object.dart';
 import 'package:nasa_satellite/core/network_extensions.dart';
 import 'package:nasa_satellite/core/state_view.dart';
 
+import '../../core/database_helper.dart';
 import '../../domain/nasa_planetary_entity.dart';
 import '../../data/nasa_service.dart';
 import '../../domain/nasa_planetary_photo.dart';
@@ -21,8 +23,9 @@ class NasaPlanetaryPhotoCubit
 
   NasaPlanetaryPhotoCubit(this.service) : super(StateView.loading());
 
-  static NasaPlanetaryPhotoCubit create() {
-    final NasaService nasaService = NasaService();
+  static NasaPlanetaryPhotoCubit create(http.Client httpClient) {
+    DatabaseHelper databaseHelper = DatabaseHelper();
+    final NasaService nasaService = NasaService(databaseHelper, client: httpClient);
     return NasaPlanetaryPhotoCubit(nasaService);
   }
 
@@ -36,7 +39,8 @@ class NasaPlanetaryPhotoCubit
   }
 
   Future<void> _fetchPhotosFromService() async {
-    final HttpResponse<List<NasaPlanetaryPhoto>> response = await service.fetchPhotos(
+    final HttpResponse<List<NasaPlanetaryPhoto>> response =
+        await service.fetchPhotos(
       "$_batchYearStart-$_batchMonthStart-01",
       "$_batchYearEnd-$_batchMonthEnd-01",
     );
@@ -48,7 +52,8 @@ class NasaPlanetaryPhotoCubit
   }
 
   Future<void> _fetchPhotosFromDatabase() async {
-    final List<NasaPlanetaryEntity> response = await service.fetchPhotosFromDatabase();
+    final List<NasaPlanetaryEntity> response =
+        await service.fetchPhotosFromDatabase();
     final List<NasaPlanetaryViewObject> viewObjectList = response.map((entity) {
       return NasaPlanetaryViewObject.fromEntity(entity);
     }).toList();
@@ -88,7 +93,9 @@ class NasaPlanetaryPhotoCubit
     if (queryFilter.isNotEmpty) {
       final String normalizeQuery = queryFilter.toLowerCase();
       final List<NasaPlanetaryViewObject> filteredList = _viewObjectList
-          .where((photo) => photo.title!.toLowerCase().contains(normalizeQuery) || photo.date!.toLowerCase().contains(normalizeQuery))
+          .where((photo) =>
+              photo.title!.toLowerCase().contains(normalizeQuery) ||
+              photo.date!.toLowerCase().contains(normalizeQuery))
           .toList();
       emit(StateView.success(filteredList));
     } else {
